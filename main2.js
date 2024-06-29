@@ -86,3 +86,7 @@ function showList() {
 }
 
 showList();
+addTask("water plants");
+changeStatus("water plants", "Done");
+deleteTask("water plants");
+showList();

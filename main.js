@@ -1,7 +1,9 @@
-const Status = {
-  todo: "To do",
-  inProgress: "In progress",
-  done: "Done",
+const statusList = {
+  list: {
+    todo: "To do",
+    inProgress: "In progress",
+    done: "Done",
+  },
 };
 const toDoList = {
   list: {
@@ -9,12 +11,16 @@ const toDoList = {
     "make a bed": "In progress",
     "write a post": "to do",
     "feed the cat": "Done",
+    "water plants": "to do",
   },
   changeStatus(task, status) {
-    if (task in toDoList.list) {
-      this.list[task] = status;
-    } else {
+    if ((task in toDoList.list) & (status in statusList.list)) {
+      this.list[task] = statusList.list[status];
+    }
+    if (status in statusList.list) {
       console.log("No such task");
+    } else {
+      console.log("Invalid status");
     }
   },
 
@@ -64,16 +70,21 @@ const toDoList = {
 };
 
 console.log(toDoList.list);
-function addTask(task, status) {
+
+function addTask(task, status = "to do") {
   if (task in toDoList.list) {
     console.log("В списке уже есть эта задача");
     return;
   } else {
-    toDoList.list[task] = status;
+    if (status === "to do") {
+      toDoList.list[task] = status;
+    }
+    if (status !== "to do") {
+      toDoList.list[task] = status;
+    }
   }
 }
-addTask("water plants", Status.inProgress);
 
+toDoList.changeStatus("water plants", "done");
 console.log(toDoList.list);
-addTask("water plants", Status.done);
 toDoList.showList();
