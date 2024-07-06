@@ -1,90 +1,131 @@
-const statusList = {
-  list: {
-    todo: "To do",
-    inProgress: "In progress",
-    done: "Done",
-  },
+const STATUS = {
+  todo: "To do",
+  inProgress: "In progress",
+  done: "Done",
 };
 const toDoList = {
-  list: {
-    "create a new practice task": "to do",
-    "make a bed": "In progress",
-    "write a post": "to do",
-    "feed the cat": "Done",
-    "water plants": "to do",
-  },
-  changeStatus(task, status) {
-    if ((task in toDoList.list) & (status in statusList.list)) {
-      this.list[task] = statusList.list[status];
-    }
-    if (status in statusList.list) {
-      console.log("No such task");
-    } else {
-      console.log("Invalid status");
-    }
-  },
+  "create a new practice task": "To do",
+  "make a bed": "To do",
+  "write a post": "In progress",
+  "feed the cat": "To do",
+};
 
-  addTask(task) {
-    if (task in toDoList.list) {
-      return;
-    } else {
-      this.list[task] = "to do";
+const changeStatus = (task, status) => {
+  if ((task in toDoList) & (status === STATUS.done)) {
+    toDoList[task] = "Done";
+
+    return;
+  }
+  if ((task in toDoList) & (status === STATUS.todo)) {
+    toDoList[task] = "To do";
+
+    return;
+  }
+  if ((task in toDoList) & (status === STATUS.inProgress)) {
+    toDoList[task] = "In progress";
+
+    return;
+  }
+  if (task in toDoList) {
+    console.log("status invalid");
+  } else {
+    showNoSuchTask();
+  }
+};
+
+const addTask = (task, status = "To do") => {
+  if (task in toDoList) {
+    console.log("This task is already in list");
+  }
+  if (status === STATUS.done) {
+    toDoList[task] = "Done";
+    return;
+  }
+  if (status === STATUS.todo) {
+    toDoList[task] = "To do";
+
+    return;
+  }
+  if (status === STATUS.inProgress) {
+    toDoList[task] = "In progress";
+
+    return;
+  }
+  if (
+    (status !== STATUS.inProgress) &
+    (status !== STATUS.done) &
+    (status !== STATUS.todo)
+  ) {
+    console.log("status invalid");
+  } else {
+    toDoList[task] = "To do";
+  }
+};
+const deleteTask = (task) => {
+  delete toDoList[task];
+};
+
+const showList = () => {
+  //function showList() {
+  let countToDo = 0;
+  for (let task in toDoList) {
+    if (toDoList[task] === "To do") {
+      countToDo++;
     }
-  },
-  deleteTask(task) {
-    delete toDoList.list[task];
-  },
-  showList() {
-    let countToDo = 0;
-    for (let task in toDoList.list) {
-      if (toDoList.list[task] === "to do") {
-        countToDo++;
-        console.log("'" + task + "'" + ":" + "'" + toDoList.list[task] + "'");
+  }
+  if (countToDo === 0) {
+    console.log("-");
+  }
+  if (countToDo !== 0) {
+    console.log("To do");
+    for (let task in toDoList) {
+      if (toDoList[task] === "To do") {
+        console.log("'" + task + "'");
       }
     }
-    if (countToDo === 0) {
-      console.log("-");
+  }
+  let countInProgress = 0;
+  for (let task in toDoList) {
+    if (toDoList[task] === "In progress") {
+      countInProgress++;
     }
-    let countInProgress = 0;
-    for (let task in toDoList.list) {
-      if (toDoList.list[task] === "In progress") {
-        countInProgress++;
-        console.log("'" + task + "'" + ":" + "'" + toDoList.list[task] + "'");
+  }
+  if (countInProgress === 0) {
+    console.log("-");
+  }
+  if (countInProgress !== 0) {
+    console.log("In progress");
+    for (let task in toDoList) {
+      if (toDoList[task] === "In progress") {
+        console.log("'" + task + "'");
       }
-    }
-    if (countInProgress === 0) {
-      console.log("-");
     }
 
     let countDone = 0;
-    for (let task in toDoList.list) {
-      if (toDoList.list[task] === "Done") {
+    for (let task in toDoList) {
+      if (toDoList[task] === "Done") {
         countDone++;
-        console.log("'" + task + "'" + ":" + "'" + toDoList.list[task] + "'");
       }
     }
     if (countDone === 0) {
       console.log("-");
     }
-  },
-};
-
-console.log(toDoList.list);
-
-function addTask(task, status = "to do") {
-  if (task in toDoList.list) {
-    console.log("В списке уже есть эта задача");
-    return;
-  } else {
-    if (status === "to do") {
-      toDoList.list[task] = status;
-    }
-    if (status !== "to do") {
-      toDoList.list[task] = status;
+    if (countDone !== 0) {
+      console.log("Done");
+      for (let task in toDoList) {
+        if (toDoList[task] === "Done") {
+          console.log("'" + task + "'");
+        }
+      }
     }
   }
-}
-
-toDoList.changeStatus("water plants", "done");
-console.log(toDoList.list);
-toDoList.showList();
+};
+const showNoSuchTask = () => {
+  //function showNoSuchTask() {
+  console.log("no such task");
+};
+changeStatus("make a b", STATUS.done);
+//addTask("probe", STATUS.done);
+//deleteTask("make a bed");
+showList();
+console.log(toDoList);

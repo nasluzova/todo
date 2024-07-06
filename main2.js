@@ -1,28 +1,64 @@
-const Status = {
+const STATUS = {
   todo: "To do",
   inProgress: "In progress",
   done: "Done",
 };
 const toDoList = {
-  "create a new practice task": "to do",
-  "make a bed": "to do",
+  "create a new practice task": "To do",
+  "make a bed": "To do",
   "write a post": "In progress",
-  "feed the cat": "to do",
+  "feed the cat": "To do",
 };
 
 function changeStatus(task, status) {
+  if ((task in toDoList) & (status === STATUS.done)) {
+    toDoList[task] = "Done";
+
+    return;
+  }
+  if ((task in toDoList) & (status === STATUS.todo)) {
+    toDoList[task] = "To do";
+
+    return;
+  }
+  if ((task in toDoList) & (status === STATUS.inProgress)) {
+    toDoList[task] = "In progress";
+
+    return;
+  }
   if (task in toDoList) {
-    toDoList[task] = status;
+    console.log("status invalid");
   } else {
-    console.log("No such task");
+    showNoSuchTask();
   }
 }
 
-function addTask(task) {
+function addTask(task, status = "To do") {
   if (task in toDoList) {
+    console.log("This task is already in list");
+  }
+  if (status === STATUS.done) {
+    toDoList[task] = "Done";
     return;
+  }
+  if (status === STATUS.todo) {
+    toDoList[task] = "To do";
+
+    return;
+  }
+  if (status === STATUS.inProgress) {
+    toDoList[task] = "In progress";
+
+    return;
+  }
+  if (
+    (status !== STATUS.inProgress) &
+    (status !== STATUS.done) &
+    (status !== STATUS.todo)
+  ) {
+    console.log("status invalid");
   } else {
-    toDoList[task] = "to do";
+    toDoList[task] = "To do";
   }
 }
 
@@ -33,7 +69,7 @@ function deleteTask(task) {
 function showList() {
   let countToDo = 0;
   for (let task in toDoList) {
-    if (toDoList[task] === "to do") {
+    if (toDoList[task] === "To do") {
       countToDo++;
     }
   }
@@ -43,7 +79,7 @@ function showList() {
   if (countToDo !== 0) {
     console.log("To do");
     for (let task in toDoList) {
-      if (toDoList[task] === "to do") {
+      if (toDoList[task] === "To do") {
         console.log("'" + task + "'");
       }
     }
@@ -84,9 +120,11 @@ function showList() {
     }
   }
 }
+function showNoSuchTask() {
+  console.log("no such task");
+}
+//changeStatus("probe", STATUS.done);
+//addTask("probe");
 
 showList();
-addTask("water plants");
-changeStatus("water plants", "Done");
-deleteTask("water plants");
-showList();
+console.log(toDoList);
