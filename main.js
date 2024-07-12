@@ -11,18 +11,18 @@ const toDoList = {
 };
 
 const changeStatus = (task, status) => {
-  if ((task in toDoList) & (status === STATUS.done)) {
-    toDoList[task] = "Done";
+  if (task in toDoList && status === STATUS.done) {
+    toDoList[task] = STATUS.done;
 
     return;
   }
-  if ((task in toDoList) & (status === STATUS.todo)) {
-    toDoList[task] = "To do";
+  if (task in toDoList && status === STATUS.todo) {
+    toDoList[task] = STATUS.todo;
 
     return;
   }
-  if ((task in toDoList) & (status === STATUS.inProgress)) {
-    toDoList[task] = "In progress";
+  if (task in toDoList && status === STATUS.inProgress) {
+    toDoList[task] = STATUS.inProgress;
 
     return;
   }
@@ -38,27 +38,25 @@ const addTask = (task, status = "To do") => {
     console.log("This task is already in list");
   }
   if (status === STATUS.done) {
-    toDoList[task] = "Done";
+    toDoList[task] = STATUS.done;
     return;
   }
   if (status === STATUS.todo) {
-    toDoList[task] = "To do";
+    toDoList[task] = STATUS.todo;
 
     return;
   }
   if (status === STATUS.inProgress) {
-    toDoList[task] = "In progress";
+    toDoList[task] = STATUS.inProgress;
 
     return;
   }
   if (
-    (status !== STATUS.inProgress) &
-    (status !== STATUS.done) &
-    (status !== STATUS.todo)
+    status !== STATUS.inProgress &&
+    status !== STATUS.done &&
+    status !== STATUS.todo
   ) {
     console.log("status invalid");
-  } else {
-    toDoList[task] = "To do";
   }
 };
 const deleteTask = (task) => {
@@ -69,7 +67,7 @@ const showList = () => {
   //function showList() {
   let countToDo = 0;
   for (let task in toDoList) {
-    if (toDoList[task] === "To do") {
+    if (toDoList[task] === STATUS.todo) {
       countToDo++;
     }
   }
@@ -79,14 +77,14 @@ const showList = () => {
   if (countToDo !== 0) {
     console.log("To do");
     for (let task in toDoList) {
-      if (toDoList[task] === "To do") {
+      if (toDoList[task] === STATUS.todo) {
         console.log("'" + task + "'");
       }
     }
   }
   let countInProgress = 0;
   for (let task in toDoList) {
-    if (toDoList[task] === "In progress") {
+    if (toDoList[task] === STATUS.inProgress) {
       countInProgress++;
     }
   }
@@ -96,26 +94,26 @@ const showList = () => {
   if (countInProgress !== 0) {
     console.log("In progress");
     for (let task in toDoList) {
-      if (toDoList[task] === "In progress") {
+      if (toDoList[task] === STATUS.inProgress) {
         console.log("'" + task + "'");
       }
     }
+  }
 
-    let countDone = 0;
+  let countDone = 0;
+  for (let task in toDoList) {
+    if (toDoList[task] === STATUS.done) {
+      countDone++;
+    }
+  }
+  if (countDone === 0) {
+    console.log("-");
+  }
+  if (countDone !== 0) {
+    console.log("Done");
     for (let task in toDoList) {
-      if (toDoList[task] === "Done") {
-        countDone++;
-      }
-    }
-    if (countDone === 0) {
-      console.log("-");
-    }
-    if (countDone !== 0) {
-      console.log("Done");
-      for (let task in toDoList) {
-        if (toDoList[task] === "Done") {
-          console.log("'" + task + "'");
-        }
+      if (toDoList[task] === STATUS.done) {
+        console.log("'" + task + "'");
       }
     }
   }
@@ -124,8 +122,8 @@ const showNoSuchTask = () => {
   //function showNoSuchTask() {
   console.log("no such task");
 };
-changeStatus("make a b", STATUS.done);
-//addTask("probe", STATUS.done);
+changeStatus("make a bed", STATUS.done);
+addTask("probe");
 //deleteTask("make a bed");
 showList();
 console.log(toDoList);
