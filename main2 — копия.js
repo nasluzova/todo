@@ -4,50 +4,59 @@ const STATUS = {
   done: "Done",
 };
 const toDoList = {
-  "create a new practice task": "To do",
-  "make a bed": "To do",
-  "write a post": "In progress",
-  "feed the cat": "To do",
+  "create a new practice task": STATUS.todo,
+  "make a bed": STATUS.todo,
+  "write a post": STATUS.inProgress,
+  "feed the cat": STATUS.done,
 };
 
 const changeStatus = (task, status) => {
   if (task in toDoList && status === STATUS.done) {
-    toDoList[task] = STATUS.done;
-
+    assignStatusDone(task, status);
     return;
   }
   if (task in toDoList && status === STATUS.todo) {
-    toDoList[task] = STATUS.todo;
+    assignStatusTodo(task, status);
 
     return;
   }
   if (task in toDoList && status === STATUS.inProgress) {
-    toDoList[task] = STATUS.inProgress;
+    assignStatusInProgress(task, status);
 
     return;
   }
-  if (task in toDoList) {
+
+  checkIfTaskInList(task);
+  let result = checkIfTaskInList(task);
+  if (result === 1) {
     console.log("status invalid");
-  } else {
-    showNoSuchTask();
+    return;
+  }
+  if (result === 0) {
+    console.log("no such task");
+    return;
   }
 };
 
 const addTask = (task, status = "To do") => {
-  if (task in toDoList) {
+  checkIfTaskInList(task);
+  let result = checkIfTaskInList(task);
+  if (result === 1) {
+    //if (task in toDoList) {
     console.log("This task is already in list");
+    return;
   }
   if (status === STATUS.done) {
-    toDoList[task] = STATUS.done;
+    assignStatusDone(task, status);
     return;
   }
   if (status === STATUS.todo) {
-    toDoList[task] = STATUS.todo;
+    assignStatusTodo(task, status);
 
     return;
   }
   if (status === STATUS.inProgress) {
-    toDoList[task] = STATUS.inProgress;
+    assignStatusInProgress(task, status);
 
     return;
   }
@@ -122,8 +131,27 @@ const showNoSuchTask = () => {
   //function showNoSuchTask() {
   console.log("no such task");
 };
-changeStatus("make a bed", STATUS.done);
-addTask("probe");
+const assignStatusDone = (task, status) => {
+  toDoList[task] = status;
+};
+const assignStatusTodo = (task, status) => {
+  toDoList[task] = status;
+};
+const assignStatusInProgress = (task, status) => {
+  toDoList[task] = status;
+};
+const checkIfTaskInList = (task) => {
+  if (task in toDoList) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
+changeStatus("write a post", STATUS.done);
+//changeStatus("make a bed", STATUS.inProgress);
+//addTask("robe", STATUS.inProgress);
+
+//addTask("probe", STATUS.done);
 //deleteTask("make a bed");
 showList();
 console.log(toDoList);
